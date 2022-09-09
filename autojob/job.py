@@ -3,7 +3,7 @@ import copy
 import os
 import subprocess
 
-DEFAULT_CONFIG_FNAME='config.sh'
+DEFAULT_CONFIG_FNAME='Config.sh'
 DEFAULT_PARAM_FNAME='param.txt'
 DEFAULT_SLURM_FNAME='job.sh'
 
@@ -15,6 +15,7 @@ class Job():
         self.build_path = "build"
         self.config_path = "configuration"
         self.out_path="output"
+        self.compile=True
     
     def _force_mkdir(self,path):
         try:
@@ -43,7 +44,13 @@ class Job():
             for k,v in self._config.slurm['parameters'].items():
                 print('#SBATCH --',k,'=',v,file=f,sep='')
             
+            print('cd',self._config.prefix,file=f)
             print('module load'," ".join(self._config.slurm['modules']),file=f)
+            if self.compile:
+                print('cd',self.build_dir,file=f)
+                print('meson',self._config.source_dir,file=f)
+                print('ninja',file=f)
+            print('cd',self._config.prefix,file=f)
                 
     def commit(self):
         self._force_mkdir(self._config.prefix)
@@ -66,6 +73,4 @@ class Job():
         self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
         self._write_slurm_file()
         
-        subprocess.run(['sbatch',self.slurm_file])
-        
-        # sbatch the job script
+        subprocess.run(['bash',self.slurm_file])
