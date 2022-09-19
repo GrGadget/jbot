@@ -42,11 +42,19 @@ class Job():
     def _write_slurm_file(self):
         with open(self.slurm_file,'w') as f:
             print('#!/usr/bin/bash -l',file=f)
+            
+            print('## SBATCH OPTIONS',file=f)
             for k,v in self._config.slurm['parameters'].items():
                 print('#SBATCH --',k,'=',v,file=f,sep='')
-            
             print('#SBATCH --output=',self.slurm_output,file=f,sep='')
+            print('',file=f)
+            
+            print('## MODULES',file=f)
             print('module load'," ".join(self._config.slurm['modules']),file=f)
+            print('module list',file=f)
+            print('',file=f)
+            
+            print('## COMPILE',file=f)
             if self.compile:
                 print('cd',self.build_dir,file=f)
                 print('meson',
@@ -54,7 +62,17 @@ class Job():
                       '-DGadget4:config_file=%s' % self.compile_config_file,
                       file=f)
                 print('ninja',file=f)
+            print('',file=f)
+            
+            print('## RUN',file=f)
             print('cd',self._config.prefix,file=f)
+            print('echo',file=f)
+            print('echo "Running on hosts: $SLURM_NODELIST"',file=f)
+            print('echo "Running on $SLURM_MNODES nodes"',file=f)
+            print('echo "Running on $SLURM_NPROC processors"',file=f)
+            print('echo "Working directory is `pwd`"',file=f)
+            print('echo',file=f)
+            print('',file=f)
                 
     def commit(self):
         self._force_mkdir(self._config.prefix)
