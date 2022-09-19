@@ -7,7 +7,7 @@ DEFAULT_CONFIG_FNAME='Config.sh'
 DEFAULT_PARAM_FNAME='param.txt'
 DEFAULT_SLURM_FNAME='job.sh'
 DEFAULT_SLURM_OUTPUT='slurm.log'
-DEFAULT_EXECUTABLE_FNAME='Gadget4'
+DEFAULT_EXECUTABLE_FNAME=os.path.join('subprojects','Gadget4','Gadget4')
 
 GADGET_RESTART_FROM_SNAPSHOT=2
 GADGET_RESTART_CREATE_IC=6
@@ -88,7 +88,7 @@ class Job():
         self._force_mkdir(self._config.prefix)
         
         self.build_dir = os.path.join(self._config.prefix,self.build_path)
-        self.executable = os.path.join(self._config.prefix,DEFAULT_EXECUTABLE_FNAME)
+        self.executable = os.path.join(self.build_dir,DEFAULT_EXECUTABLE_FNAME)
         self._force_mkdir(self.build_dir)
         
         self.output_dir = os.path.join(self._config.prefix,self.out_path)
