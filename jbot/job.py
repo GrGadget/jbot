@@ -93,8 +93,8 @@ class Job():
             print('echo',file=f)
             print('mpirun','-np','$SLURM_NPROCS',self.executable,self.parameter_file,self.gadget_instruction,file=f)
             print('',file=f)
-                
-    def commit(self):
+    
+    def _write_all_config_files(self):
         self._force_mkdir(self._config.prefix)
         
         self.build_dir = os.path.join(self._config.prefix,self.build_path)
@@ -120,4 +120,9 @@ class Job():
         self.slurm_output=os.path.join(self.output_dir,DEFAULT_SLURM_OUTPUT)
         self._write_slurm_file()
         
+    def _submit(self):        
         subprocess.run(['sbatch',self.slurm_file])
+        
+    def commit(self):
+        self._write_all_config_files()
+        self._submit()
