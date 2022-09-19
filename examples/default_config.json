@@ -1,8 +1,10 @@
+
 {
     "prefix" :
-    "/home/lagrange/BACKUP/common/Documents/UNITS_PHD/forge/job-automation/test-dir/my-run",
+    "/beegfs/equintana/lightcone",
     
-    "source_dir" : "/home/lagrange/Documents/UNITS_PHD/forge/grgadget/grgadget",
+    "source_dir" : 
+    "/u/equintana/sources/grgadget/GrGadget-main",
     
     "paramfile" : {
         "InitCondFile" : "../ic/output/snap_ics_000",
@@ -103,9 +105,9 @@
         "parameters" : {
             "time" : "01:00:00",
             "nodes" : 1,
-            "ntasks_per_node" : 48,
-            "job_name" : "no_name",
-            "mem_per_cpu" : 5000
+            "ntasks-per-node" : 48,
+            "job-name" : "no_name",
+            "mem-per-cpu" : 5000
         },
         
         "modules" : ["grgadget"]

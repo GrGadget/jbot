@@ -6,6 +6,7 @@ import subprocess
 DEFAULT_CONFIG_FNAME='Config.sh'
 DEFAULT_PARAM_FNAME='param.txt'
 DEFAULT_SLURM_FNAME='job.sh'
+DEFAULT_SLURM_OUTPUT='slurm.log'
 
 
 class Job():
@@ -44,6 +45,7 @@ class Job():
             for k,v in self._config.slurm['parameters'].items():
                 print('#SBATCH --',k,'=',v,file=f,sep='')
             
+            print('#SBATCH --output=',self.slurm_output,file=f,sep='')
             print('module load'," ".join(self._config.slurm['modules']),file=f)
             if self.compile:
                 print('cd',self.build_dir,file=f)
@@ -73,6 +75,7 @@ class Job():
         self._write_paramfile()
         
         self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
+        self.slurm_output=os.path.join(self.output_dir,DEFAULT_SLURM_OUTPUT)
         self._write_slurm_file()
         
-        subprocess.run(['bash',self.slurm_file])
+        subprocess.run(['sbatch',self.slurm_file])
