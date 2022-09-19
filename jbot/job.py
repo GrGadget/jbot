@@ -2,9 +2,11 @@ import logging
 import copy
 import os
 import subprocess
+import numpy
 
 DEFAULT_CONFIG_FNAME='Config.sh'
 DEFAULT_PARAM_FNAME='param.txt'
+DEFAULT_SNAPLIST_FNAME='snap-times.txt'
 DEFAULT_SLURM_FNAME='job.sh'
 DEFAULT_SLURM_OUTPUT='slurm.log'
 DEFAULT_EXECUTABLE_FNAME=os.path.join('subprojects','Gadget4','Gadget4')
@@ -43,6 +45,14 @@ class Job():
         with open(self.parameter_file,'w') as f:
             for k,v in self._config.paramfile.items():
                 print(k,v,file=f)
+            print('OutputDir',self.output_dir,file=f)
+            print('OutputListFilename',self.snaplist_file,file=f)
+    
+    def _write_snaplist(self):
+        with open(self.snaplist_file,'w') as f:
+            zlist = numpy.sort(self.output_redshift)
+            for z in zlist:
+                print(1.0/(1+z),file=f)
     
     def _write_slurm_file(self):
         with open(self.slurm_file,'w') as f:
@@ -99,6 +109,9 @@ class Job():
         
         self.compile_config_file = os.path.join(self.configuration_dir,DEFAULT_CONFIG_FNAME)
         self._write_compile_config()
+        
+        self.snaplist_file = os.path.join(self.configuration_dir,DEFAULT_SNAPLIST_FNAME)
+        self._write_snaplist()
         
         self.parameter_file = os.path.join(self.configuration_dir,DEFAULT_PARAM_FNAME)
         self._write_paramfile()
