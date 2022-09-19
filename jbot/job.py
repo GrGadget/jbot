@@ -50,7 +50,7 @@ class Job():
     
     def _write_snaplist(self):
         with open(self.snaplist_file,'w') as f:
-            zlist = numpy.sort(self._config.output_redshift)
+            zlist = numpy.sort(self._config.output_redshift)[::-1]
             for z in zlist:
                 print(1.0/(1+z),file=f)
     
