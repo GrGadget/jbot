@@ -10,7 +10,7 @@ DEFAULT_SLURM_FNAME='job.sh'
 
 class Job():
     def __init__(self,default_config):
-        logging.info('constructing ICgen type')
+        logging.info('constructing Job type')
         self._config = copy.deepcopy(default_config)
         self.build_path = "build"
         self.config_path = "configuration"
@@ -44,11 +44,13 @@ class Job():
             for k,v in self._config.slurm['parameters'].items():
                 print('#SBATCH --',k,'=',v,file=f,sep='')
             
-            print('cd',self._config.prefix,file=f)
             print('module load'," ".join(self._config.slurm['modules']),file=f)
             if self.compile:
                 print('cd',self.build_dir,file=f)
-                print('meson',self._config.source_dir,file=f)
+                print('meson',
+                      self._config.source_dir,
+                      '-DGadget4:config_file=%s' % self.compile_config_file,
+                      file=f)
                 print('ninja',file=f)
             print('cd',self._config.prefix,file=f)
                 
@@ -73,4 +75,4 @@ class Job():
         self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
         self._write_slurm_file()
         
-        # subprocess.run(['bash',self.slurm_file])
+        subprocess.run(['bash',self.slurm_file])
