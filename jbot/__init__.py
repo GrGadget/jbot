@@ -4,6 +4,6 @@ from .job import Job
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG,filename='autojob.log',filemode='w')
+logging.basicConfig(level=logging.DEBUG,filename='jbot.log',filemode='w')
 
 __all__ = ['config','ICgen', 'Job']

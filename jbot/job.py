@@ -73,4 +73,4 @@ class Job():
         self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
         self._write_slurm_file()
         
-        subprocess.run(['bash',self.slurm_file])
+        # subprocess.run(['bash',self.slurm_file])
