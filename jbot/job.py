@@ -7,6 +7,10 @@ DEFAULT_CONFIG_FNAME='Config.sh'
 DEFAULT_PARAM_FNAME='param.txt'
 DEFAULT_SLURM_FNAME='job.sh'
 DEFAULT_SLURM_OUTPUT='slurm.log'
+DEFAULT_EXECUTABLE_FNAME='Gadget4'
+
+GADGET_RESTART_FROM_SNAPSHOT=2
+GADGET_RESTART_CREATE_IC=6
 
 
 class Job():
@@ -17,6 +21,7 @@ class Job():
         self.config_path = "configuration"
         self.out_path="output"
         self.compile=True
+        self.gadget_instruction=GADGET_RESTART_FROM_SNAPSHOT
     
     def _force_mkdir(self,path):
         try:
@@ -76,12 +81,14 @@ class Job():
             print('echo "Running on $SLURM_NPROCS processors"',file=f)
             print('echo "Working directory is `pwd`"',file=f)
             print('echo',file=f)
+            print('mpirun','-np','$SLURM_NPROCS',self.executable,self.parameter_file,self.gadget_instruction,file=f)
             print('',file=f)
                 
     def commit(self):
         self._force_mkdir(self._config.prefix)
         
         self.build_dir = os.path.join(self._config.prefix,self.build_path)
+        self.executable = os.path.join(self._config.prefix,DEFAULT_EXECUTABLE_FNAME)
         self._force_mkdir(self.build_dir)
         
         self.output_dir = os.path.join(self._config.prefix,self.out_path)
