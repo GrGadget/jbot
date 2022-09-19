@@ -1,0 +1,113 @@
+{
+    "prefix" :
+    "/home/lagrange/BACKUP/common/Documents/UNITS_PHD/forge/job-automation/test-dir/my-run",
+    
+    "source_dir" : "/home/lagrange/Documents/UNITS_PHD/forge/grgadget/grgadget",
+    
+    "paramfile" : {
+        "InitCondFile" : "../ic/output/snap_ics_000",
+        "OutputDir"    : "./output",
+        "SnapshotFileBase" : "snap",
+        "OutputListFilename" : "../../snap-times.txt",
+        "ICFormat"   :         1,
+        "SnapFormat" :         1,
+        
+        "TimeLimitCPU"   :  36000,
+        "CpuTimeBetRestartFile" :  360000,
+        "MaxMemSize" :   4000,
+        
+        "TimeBegin" :     0.05,
+        "TimeMax"   :      1.0,
+        "ComovingIntegrationOn" :  1,
+        
+        "Omega0" :                  0.3143996041505493,
+        "OmegaLambda":               0.6856003958494508,
+        "OmegaBaryon":               0.04938682464547351,
+        "HubbleParam":               0.6732117,
+        "Hubble":                    0.1,
+        "BoxSize":                   500000.0,
+
+        "OutputListOn":              1,
+        "TimeBetSnapshot":           0.0,
+        "TimeOfFirstSnapshot":       0.0,
+        "TimeBetStatistics":         0.01,
+        "NumFilesPerSnapshot":       1,
+        "MaxFilesWithConcurrentIO":  1,
+
+        "ErrTolIntAccuracy":        0.5,
+        "CourantFac":               3.0,
+        "MaxSizeTimestep":          5.0,
+        "MinSizeTimestep":          0.0, 
+
+        "TypeOfOpeningCriterion":                1,
+        "ErrTolTheta":                           0.75,
+        "ErrTolThetaMax":                        1.0,
+        "ErrTolForceAcc":                        0.002,
+        "TopNodeFactor":                         3.0,
+
+        "ActivePartFracForNewDomainDecomp":      0.01,
+
+        "DesNumNgb":                        64,
+        "MaxNumNgbDeviation":               1, 
+
+        "UnitLength_in_cm":         3.085678e21,
+        "UnitMass_in_g":            1.989e43,          
+        "UnitVelocity_in_cm_per_s": 1e5,                
+        "GravityConstantInternal":  0,
+
+        "SofteningComovingClass0":      100,
+        "SofteningMaxPhysClass0":       100,
+        "SofteningClassOfPartType0":    0,
+        "SofteningClassOfPartType1":    0,
+        "SofteningClassOfPartType2":    0,
+        "SofteningClassOfPartType3":    0,
+        "SofteningClassOfPartType4":    0,
+        "SofteningClassOfPartType5":    0,
+
+        "ArtBulkViscConst":             1.0,
+        "MinEgySpec":                   0,
+        "InitGasTemp":                  0,
+
+        "SamplingCorrection": 4
+    },
+    
+    "compiler_options" :
+    {
+        "options" :
+        {
+            "PERIODIC": true,
+            "GADGET2_HEADER": true,
+            "SECOND_ORDER_LPT_ICS": true,    
+            "SELFGRAVITY": true,
+            "FMM": true,
+            "FFT_COLUMN_BASED": true,
+            "DOUBLEPRECISION_FFTW": true,
+            "CREATE_GRID": true,
+            "IMPOSE_PINNING": true,
+            "NGENIC_2LPT": true,
+            "IDS_64BIT": true
+        },
+        
+        "parameters":
+        {
+            "NTYPES": 6,
+            "PMGRID": 512,
+            "ASMTH": 1.25,
+            "NSOFTCLASSES": 1,
+            "DOUBLEPRECISION": 1,
+            "NGENIC": 512
+        }
+    },
+
+    "slurm" : {
+        "parameters" : {
+            "time" : "01:00:00",
+            "nodes" : 1,
+            "ntasks_per_node" : 48,
+            "job_name" : "no_name",
+            "mem_per_cpu" : 5000
+        },
+        
+        "modules" : ["grgadget"]
+    } 
+}
