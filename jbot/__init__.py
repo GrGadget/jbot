@@ -6,4 +6,4 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG,filename='jbot.log',filemode='w')
 
-__all__ = ['config','ICgen', 'Job']
+__all__ = ['Config','ICgen', 'Job']
