@@ -94,6 +94,9 @@ class Job():
             print('mpirun','-np','$SLURM_NPROCS',self.executable,self.parameter_file,self.gadget_instruction,file=f)
             print('',file=f)
     
+    def set_param(self,name,value):
+        self._config.paramfile[name]=value
+   
     def _write_all_config_files(self):
         self._force_mkdir(self._config.prefix)
         
