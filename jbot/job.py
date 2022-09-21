@@ -11,6 +11,10 @@ DEFAULT_SLURM_FNAME='job.sh'
 DEFAULT_SLURM_OUTPUT='slurm.log'
 DEFAULT_EXECUTABLE_FNAME=os.path.join('subprojects','Gadget4','Gadget4')
 
+DEFAULT_BUILD_PATH='build'
+DEFAULT_CONFIGURE_PATH='configure'
+DEFAULT_OUTPUT_PATH='output'
+
 GADGET_RESTART_FROM_SNAPSHOT=2
 GADGET_RESTART_CREATE_IC=6
 
@@ -95,10 +99,10 @@ class Job():
         self._config.paramfile[name]=value
     
     def _define_config_filenames(self):
-        self.build_dir = os.path.join(self._config.prefix,self.build_path)
+        self.build_dir = os.path.join(self._config.prefix,DEFAULT_BUILD_PATH)
         self.executable = os.path.join(self.build_dir,DEFAULT_EXECUTABLE_FNAME)
-        self.output_dir = os.path.join(self._config.prefix,self.out_path)
-        self.configuration_dir = os.path.join(self._config.prefix,self.config_path)
+        self.output_dir = os.path.join(self._config.prefix,DEFAULT_OUTPUT_PATH)
+        self.configuration_dir = os.path.join(self._config.prefix,DEFAULT_CONFIGURE_PATH)
         self.compile_config_file = os.path.join(self.configuration_dir,DEFAULT_CONFIG_FNAME)
         self.snaplist_file = os.path.join(self.configuration_dir,DEFAULT_SNAPLIST_FNAME)
         self.parameter_file = os.path.join(self.configuration_dir,DEFAULT_PARAM_FNAME)
