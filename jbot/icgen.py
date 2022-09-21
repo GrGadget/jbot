@@ -108,7 +108,7 @@ class ICgen(Job):
     
     
     def _generate_powerspec(self):
-        z0 = 1.0/self._config.parameters['TimeBegin'] - 1.
+        z0 = 1.0/self._config.paramfile['TimeBegin'] - 1.
         zlist = [z0]
         kh,z,pk = self._get_camb_pw(zlist)
         dpk = self._get_delta(kh,pk)
