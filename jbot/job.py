@@ -19,9 +19,6 @@ class Job():
     def __init__(self,default_config):
         logging.info('constructing Job type')
         self._config = copy.deepcopy(default_config)
-        self.build_path = "build"
-        self.config_path = "configuration"
-        self.out_path="output"
         self.compile=True
         self.gadget_instruction=GADGET_RESTART_FROM_SNAPSHOT
     
@@ -118,6 +115,9 @@ class Job():
         self._write_snaplist()
         self._write_paramfile()
         self._write_slurm_file()
+        
+    def set_snapshotz(self,zlist):
+        self._config.output_redshift = zlist
         
     def _submit(self):        
         subprocess.run(['sbatch',self.slurm_file])
