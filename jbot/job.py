@@ -125,7 +125,7 @@ class Job():
         
     def _submit(self):        
         subprocess.run(['sbatch',self.slurm_file])
-        
+    
     def commit(self):
         self._write_all_config_files()
         self._submit()
