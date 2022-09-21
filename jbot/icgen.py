@@ -103,9 +103,17 @@ class ICgen(Job):
         self.gadget_instruction=GADGET_RESTART_CREATE_IC
     
     def _append_ngenic(self):
+        '''
+        Append ngenic extra compiler and paramfile options.
+        '''
         with open(self.parameter_file,'a') as f:
             for k,v in self._config.ngenic.items():
                 print(k,v,file=f)
+        with open(self.compile_config_file,'a') as f:
+            print('NGENIC=',self._config.compiler_options['parameters']['PMGRID'],sep='',file=f)
+            for k,v in self._config.compiler_options['ngenic_options'].items():
+                if v==True:
+                    print(k,file=f)
     
     def _write_powerspec(self):
         z0 = 1.0/self._config.paramfile['TimeBegin'] - 1.
