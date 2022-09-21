@@ -107,22 +107,28 @@ class ICgen(Job):
             for k,v in self._config.ngenic.items():
                 print(k,v,file=f)
     
-    
-    def _generate_powerspec(self):
+    def _write_powerspec(self):
         z0 = 1.0/self._config.paramfile['TimeBegin'] - 1.
         zlist = [z0,0]
         kh,z,pk = self._get_camb_pw(zlist)
         dpk = self._get_delta(kh,pk)
         self._save_camb_to_file( self.powerspec_file, kh,dpk[0,:])
         
+    def set_param(self,name,value):
+        self._config.ngenic[name]=value
     
-    def commit(self):
-        super()._write_all_config_files()
-        
+    def _define_config_filenames(self):
+        super()._define_config_filenames()
         self.powerspec_file = os.path.join(self.configuration_dir,DEFAULT_POWERSPEC_FILE)
         self.set_param("PowerSpectrumFile",self.powerspec_file)
-        self._generate_powerspec()
-        
+    
+    def _write_all_config_files(self):
+        super()._write_all_config_files()
+        self._write_powerspec()
         self._append_ngenic()
         
-        super()._submit()
+    
+    def commit(self):
+        self._define_config_filenames()
+        self._write_all_config_files()
+        self._submit()

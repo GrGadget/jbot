@@ -96,36 +96,33 @@ class Job():
     
     def set_param(self,name,value):
         self._config.paramfile[name]=value
+    
+    def _define_config_filenames(self):
+        self.build_dir = os.path.join(self._config.prefix,self.build_path)
+        self.executable = os.path.join(self.build_dir,DEFAULT_EXECUTABLE_FNAME)
+        self.output_dir = os.path.join(self._config.prefix,self.out_path)
+        self.configuration_dir = os.path.join(self._config.prefix,self.config_path)
+        self.compile_config_file = os.path.join(self.configuration_dir,DEFAULT_CONFIG_FNAME)
+        self.snaplist_file = os.path.join(self.configuration_dir,DEFAULT_SNAPLIST_FNAME)
+        self.parameter_file = os.path.join(self.configuration_dir,DEFAULT_PARAM_FNAME)
+        self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
+        self.slurm_output=os.path.join(self.output_dir,DEFAULT_SLURM_OUTPUT)
    
     def _write_all_config_files(self):
         self._force_mkdir(self._config.prefix)
-        
-        self.build_dir = os.path.join(self._config.prefix,self.build_path)
-        self.executable = os.path.join(self.build_dir,DEFAULT_EXECUTABLE_FNAME)
         self._force_mkdir(self.build_dir)
-        
-        self.output_dir = os.path.join(self._config.prefix,self.out_path)
         self._force_mkdir(self.output_dir)
-        
-        self.configuration_dir = os.path.join(self._config.prefix,self.config_path)
         self._force_mkdir(self.configuration_dir)
         
-        self.compile_config_file = os.path.join(self.configuration_dir,DEFAULT_CONFIG_FNAME)
         self._write_compile_config()
-        
-        self.snaplist_file = os.path.join(self.configuration_dir,DEFAULT_SNAPLIST_FNAME)
         self._write_snaplist()
-        
-        self.parameter_file = os.path.join(self.configuration_dir,DEFAULT_PARAM_FNAME)
         self._write_paramfile()
-        
-        self.slurm_file=os.path.join(self.configuration_dir,DEFAULT_SLURM_FNAME)
-        self.slurm_output=os.path.join(self.output_dir,DEFAULT_SLURM_OUTPUT)
         self._write_slurm_file()
         
     def _submit(self):        
         subprocess.run(['sbatch',self.slurm_file])
     
     def commit(self):
+        self._define_config_filenames()
         self._write_all_config_files()
         self._submit()
