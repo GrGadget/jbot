@@ -44,7 +44,7 @@ class ICgen(Job):
         omch2 = Omc*h2
         
         Hubble = self._config.paramfile['Hubble']
-        H0 = h * Hubble / (km_p_s/Mpc)
+        H0 = h * (Hubble * V / L) / (km_p_s/Mpc)
        
         pars.set_cosmology(H0=H0, ombh2=ombh2, omch2=Omc*h2)
         
