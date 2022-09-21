@@ -48,7 +48,6 @@ class ICgen(Job):
        
         pars.set_cosmology(H0=H0, ombh2=ombh2, omch2=Omc*h2)
         
-        logging.debug('generating power spectrum in box of L = %f Mpc, ombh2 = %f, omch2 = %f, H0 = %f' % (boxL,ombh2,omch2,H0))
             
         pars.InitPower.set_params(As=2.097e-9,ns=0.965)
         
@@ -72,7 +71,9 @@ class ICgen(Job):
         kh, z, pk = results.get_matter_power_spectrum(
             minkh=kmin, maxkh=kmax, npoints = npoints)
         s8 = numpy.array(results.get_sigma8())
-        # self._config.ngenic['Sigma8'] = s8
+        self._config.ngenic['Sigma8'] = s8[-1]
+        
+        logging.debug('generating power spectrum in box of L = %f Mpc, ombh2 = %f, omch2 = %f, H0 =        %f, sigma8 = %f' % (boxL,ombh2,omch2,H0,s8[-1]))
         return kh,z,pk
         
         #Non-Linear spectra (Halofit)
@@ -109,11 +110,10 @@ class ICgen(Job):
     
     def _generate_powerspec(self):
         z0 = 1.0/self._config.paramfile['TimeBegin'] - 1.
-        zlist = [z0]
+        zlist = [z0,0]
         kh,z,pk = self._get_camb_pw(zlist)
         dpk = self._get_delta(kh,pk)
-        for i in range(len(zlist)):
-            self._save_camb_to_file( self.powerspec_file, kh,dpk[i,:])
+        self._save_camb_to_file( self.powerspec_file, kh,dpk[0,:])
         
     
     def commit(self):
